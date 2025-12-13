@@ -1,0 +1,35 @@
+# 配电网检修调度多智能体强化学习主配置
+
+# 环境配置
+defaults:
+  - env: powergrid
+  - alg: qmix_powergrid
+  
+# 运行参数
+runner: "episode"
+mac: "basic_mac"
+env: "powergrid"
+t_max: 2050000  # 总训练步数
+
+# 实验设置
+use_cuda: True
+buffer_cpu_only: True
+
+# 日志和保存
+use_tensorboard: True
+save_model: True
+save_model_interval: 20000
+checkpoint_path: ""
+
+# 评估设置
+evaluate: False
+load_step: 0
+save_replay: False
+
+# 实验信息
+label: "powergrid_maintenance"
+unique_token: "default_experiment"
+
+# 随机种子
+seed: 1
+env_seed: 1

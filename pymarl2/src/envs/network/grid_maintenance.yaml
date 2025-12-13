@@ -1,0 +1,14 @@
+env: "grid_maintenance"
+env_args:
+    some_arg: 你的参数
+    horizon_days: 7
+    window_size: 3
+    load_curve_file: "data/ober_sub/loads_curve.csv"
+    # 其它你构造环境的参数，如任务计划excel文件等
+    
+reward_shape: 'total'   # 你的环境reward名字
+episode_limit: 168      # 例如7天*24小时
+n_agents: 4
+n_actions: 4
+state_shape: 4          # 按你的get_state返回shape写
+obs_shape: 9            # 按你的get_obs_agent返回shape写

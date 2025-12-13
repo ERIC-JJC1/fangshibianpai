@@ -1,0 +1,157 @@
+# === 配电网检修调度 PyMARL 完整配置文件 ===
+
+# === 环境设置 ===
+env: "powergrid"
+
+# 环境参数
+env_args:
+  task_file: "maintenance_plan_20250521_151713.xlsx"
+  load_curve_file: "test_loads_curve.csv"
+  episode_limit: 91
+  obs_last_action: true
+  obs_agent_id: true
+  state_last_action: true
+  reward_completion: 100.0
+  reward_delay: -50.0
+  reward_infeasible: -1000.0
+  reward_stability: 10.0
+  reward_load_shed: -500.0
+
+# === PyMARL 核心组件 ===
+
+# 运行器
+runner: "episode"
+
+# 多智能体控制器
+mac: "basic_mac"
+
+# 智能体网络
+agent: "rnn"
+agent_output_type: "q"
+action_selector: "epsilon_greedy"
+
+# 学习器
+learner: "q_learner"
+
+# 混合网络
+mixer: "qmix"
+
+# === 网络架构参数 ===
+
+# RNN参数
+rnn_hidden_dim: 64
+hidden_dim: 64
+
+# 混合网络参数
+mixing_embed_dim: 32
+hypernet_layers: 2
+hypernet_embed: 64
+
+# === 学习参数 ===
+
+# 优化器
+lr: 0.0005
+critic_lr: 0.0005
+agent_lr: 0.0005
+mixer_lr: 0.0005
+optim_alpha: 0.99
+optim_eps: 0.00001
+optim_weight_decay: 0
+grad_norm_clip: 10
+
+# 强化学习参数
+gamma: 0.99
+td_lambda: 0.8
+double_q: true
+
+# 目标网络
+target_update_interval: 200
+
+# === 探索策略 ===
+
+# Epsilon-greedy参数
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 50000
+epsilon_decay: "linear"
+test_epsilon: 0.0
+evaluation_epsilon: 0.0
+
+# === 训练参数 ===
+
+# 批次设置
+batch_size: 32
+batch_size_run: 1
+buffer_size: 32000
+buffer_cpu_only: true
+
+# 学习控制
+learning_starts: 1000
+train_freq: 4
+train_batch_size: 32
+
+# 经验回放
+use_replay_buffer: true
+replay_buffer_size: 32000
+
+# === 训练控制 ===
+
+# 训练步数
+t_max: 2000000
+
+# 测试设置
+test_nepisode: 32
+test_interval: 10000
+
+# 日志设置
+log_interval: 2000
+runner_log_interval: 2000
+learner_log_interval: 2000
+
+# === 模型保存 ===
+
+save_model: true
+save_model_interval: 100000
+checkpoint_path: ""
+load_step: 0
+evaluate: false
+save_replay: false
+
+# === 设备和随机种子 ===
+
+use_cuda: true
+seed: 12345
+
+# === 观测设置 ===
+
+obs_last_action: true
+obs_agent_id: true
+obs_individual_obs: false
+obs_instead_of_state: false
+
+# 状态设置
+state_last_action: true
+
+# === 日志和实验 ===
+
+use_tensorboard: true
+label: "powergrid_qmix"
+unique_token: "powergrid_experiment"
+name: "powergrid_maintenance"
+
+# === 环境信息（会被实际环境覆盖）===
+
+n_agents: 4
+n_actions: 16
+state_shape: 4
+obs_shape: 9
+episode_limit: 168
+
+# === 其他设置 ===
+
+# 并行设置
+num_workers: 1
+
+# 调试设置
+render: false
+record: false
