@@ -4,7 +4,7 @@ import pandapower.plotting as pp
 import networkx as nx
 
 net = pn.mv_oberrhein()  # 换成你的网
-G = pp.create_nxgraph(net)  # 默认无向图
+G = top.create_nxgraph(net, respect_switches=True)  # 默认无向图
 
 def traverse_feeder(G, start_bus, first_neighbor, exclude_buses):
     visited = set([start_bus, first_neighbor])

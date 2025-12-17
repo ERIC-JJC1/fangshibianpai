@@ -1,0 +1,27 @@
+[INFO] pandapower version: 2.14.9
+
+[SECTION POINT CANDIDATES] lines with ANY open switch: 6
+     line_id  bus  from_bus  to_bus  closed
+14         8  129       167     129   False
+13         8  167       167     129    True
+34        23  132       195     132   False
+33        23  195       195     132    True
+47        31   31        31     190    True
+48        31  190        31     190   False
+106       66   54        54     147    True
+107       66  147        54     147   False
+144       88  223       236     223   False
+143       88  236       236     223    True
+310      188   35        35      45    True
+311      188   45        35      45   False
+
+[SUMMARY]
+ line_id  n_switch  n_open  n_closed      buses
+       8         2       1         1 [167, 129]
+      23         2       1         1 [195, 132]
+      31         2       1         1  [31, 190]
+      66         2       1         1  [54, 147]
+      88         2       1         1 [236, 223]
+     188         2       1         1   [35, 45]
+
+[OK] saved: logs/oberrhein_section_points.csv

@@ -1,0 +1,29 @@
+[Graph raw] nodes=179, edges=183
+[Graph sw ] nodes=179, edges=177
+
+=== Not respecting switches (pure topology) ===
+Connected components: 1
+Top 1 component sizes: [179]
+  - Comp 0: size=179, sample_buses=[0, 1, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
+
+=== Respecting switches (electrical topology) ===
+Connected components: 2
+Top 2 component sizes: [109, 70]
+  - Comp 0: size=109, sample_buses=[0, 1, 2, 3, 4, 5, 6, 7, 8, 29, 30, 31, 33, 40, 54, 72, 74, 75, 85, 101]
+  - Comp 1: size=70, sample_buses=[32, 34, 35, 36, 37, 38, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
+
+=== Tie pair cross-component check (respect_switches=True) ===
+ tie_id  sw_a  bus_a  comp_a  closed_a  sw_b  bus_b  comp_b  closed_b  cross_component
+     23    33    195       0      True    34    132       1     False             True
+     31    47     31       0      True    48    190       1     False             True
+     66   106     54       0      True   107    147       0     False            False
+     88   143    236       0      True   144    223       1     False             True
+    162   264     80       1      True   265     39       1      True            False
+    188   310     35       1      True   311     45       1     False            False
+
+Summary:
+cross_component
+True     3
+False    3
+
+[OK] saved: logs/feeders_by_switch_stage2_5.csv

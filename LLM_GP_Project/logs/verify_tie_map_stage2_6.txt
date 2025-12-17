@@ -1,0 +1,29 @@
+[Graph] nodes=179, edges=177
+
+=== tie_map 校验统计 ===
+level
+WARN    2
+
+=== 标注后的 tie switch（前20行） ===
+     bus et  element  closed tie_id tie_peer_switch
+33   195  l       23    True     23              34
+34   132  l       23   False     23              33
+47    31  l       31    True     31              48
+48   190  l       31   False     31              47
+106   54  l       66    True     66             107
+107  147  l       66   False     66             106
+143  236  l       88    True     88             144
+144  223  l       88   False     88             143
+264   80  l      162    True    162             265
+265   39  l      162    True    162             264
+310   35  l      188    True    188             311
+311   45  l      188   False    188             310
+
+Tie switches: 12, open(closed=False): 5, closed: 7
+
+[OK] saved issues csv: logs/tie_map_issues_stage2.csv
+
+=== Issues preview (top 30) ===
+level  tie_id  switch_id  peer_switch_id  line_id  bus                  rule                                                                  message
+ WARN     162        264             265      162   80 operational_semantics both ends are closed -> tie is electrically connected (may create loop).
+ WARN     162        265             264      162   39 operational_semantics both ends are closed -> tie is electrically connected (may create loop).

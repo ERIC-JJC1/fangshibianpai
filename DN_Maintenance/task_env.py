@@ -12,7 +12,7 @@ import copy
 import pandas as pd
 from datetime import datetime
 import itertools
-
+import pandapower.topology as top
 
 # 设定馈线之间的联络开关
 # 这里只是示意，实际你可以灵活组合——哪个馈线因哪条支路可转供到哪个邻馈线，哪些开关需要操作
@@ -133,16 +133,7 @@ for task in tasks:
 
 #--------------------------------------------------------------------------
 
-##--------------------------定义转供方案和实际操作开关映射的函数---------------------------------------
 
-def apply_transfer_scheme(self, task):
-    transfer_list = task['transfer_options']
-    transfer_idx = task.get('transfer_idx', 0)
-    switch_ops = transfer_list[transfer_idx]['switch_ops']
-    for op in switch_ops:
-        self.net.switch.loc[op['switch_id'], "closed"] = op['closed']
-
- #----------------------------------------------------------------------------------------
 
  
 def traverse_feeder(G, start_bus, first_neighbor, exclude_buses):  
@@ -205,7 +196,8 @@ class GridMaintenanceEnv(object):
         important_buses = [167, 273, 244, 65, 148, 216, 227]  
         net.bus["important"] = False  
         net.bus.loc[important_buses, "important"] = True
-        G = nx.Graph(net)
+        
+        G = top.create_nxgraph(net, respect_switches=True)
         feeder1 = traverse_feeder(G, 319, 6, {147})  
         feeder2 = traverse_feeder(G, 126, 29, {190, 132, 54, 223})  
         feeder3 = traverse_feeder(G, 58, 86, {45, 195, 236, 80})  
@@ -269,7 +261,16 @@ class GridMaintenanceEnv(object):
         # 可选：记录每个agent上回观测
         return self.get_obs(), self.get_state()
 
+    ##--------------------------定义转供方案和实际操作开关映射的函数---------------------------------------
 
+    def apply_transfer_scheme(self, task):
+        transfer_list = task['transfer_options']
+        transfer_idx = task.get('transfer_idx', 0)
+        switch_ops = transfer_list[transfer_idx]['switch_ops']
+        for op in switch_ops:
+            self.net.switch.loc[op['switch_id'], "closed"] = op['closed']
+
+    #----------------------------------------------------------------------------------------
     def step(self, actions):
         # actions: [actions_agent0, actions_agent1, ...]
         # 1. 任务分配
@@ -434,7 +435,8 @@ class GridMaintenanceEnv(object):
             # 固定duration，不可选，只给1
             duration_mask = [1]
 
-        new_transfer_mask = []
+            new_transfer_mask = []
+            
         for option in task['transfer_options']:
             # 检查该option下所有switch_ops是否都不与occupied_switches冲突
             can_choose = True

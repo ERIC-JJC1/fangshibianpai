@@ -1,0 +1,22 @@
+
+=== tie_map 校验统计 ===
+No issues. (0)
+
+=== 标注后的 tie switch（前20行） ===
+     bus et  element  closed tie_id tie_peer_switch
+13   167  l        8    True      8              14
+14   129  l        8   False      8              13
+33   195  l       23    True     23              34
+34   132  l       23   False     23              33
+47    31  l       31    True     31              48
+48   190  l       31   False     31              47
+106   54  l       66    True     66             107
+107  147  l       66   False     66             106
+143  236  l       88    True     88             144
+144  223  l       88   False     88             143
+310   35  l      188    True    188             311
+311   45  l      188   False    188             310
+
+Tie switches: 12, open(closed=False): 6, closed: 6
+
+[OK] saved issues csv: logs/tie_map_issues_stage2.csv

@@ -7,13 +7,14 @@ import pandas as pd
 import numpy as np  
 from datetime import datetime, timedelta  
 import copy  
+import pandapower as pp
 import pandapower.networks as pn  
-import pandapower.plotting as pp  
+import pandapower.plotting as plot  # 如果你真需要画图  
 import networkx as nx  
 import copy  
 #============================================================================= 
 net = pn.mv_oberrhein()  
-G = pp.create_nxgraph(net)  
+G = top.create_nxgraph(net, respect_switches=True)  
 
 def traverse_feeder(G, start_bus, first_neighbor, exclude_buses):  
     visited = set([start_bus, first_neighbor])  

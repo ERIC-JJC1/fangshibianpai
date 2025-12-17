@@ -1,0 +1,7 @@
+tie_id,sw_a,bus_a,comp_a,closed_a,sw_b,bus_b,comp_b,closed_b,cross_component
+23,33,195,0,True,34,132,1,False,True
+31,47,31,0,True,48,190,1,False,True
+66,106,54,0,True,107,147,0,False,False
+88,143,236,0,True,144,223,1,False,True
+162,264,80,1,True,265,39,1,True,False
+188,310,35,1,True,311,45,1,False,False

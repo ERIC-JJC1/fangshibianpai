@@ -1,0 +1,3 @@
+[CLEAN TIES] count=6 (two switches and exactly one open)
+[OK] wrote: topology/tie_map.py
+Now re-run: python -m scripts.verify_tie_map

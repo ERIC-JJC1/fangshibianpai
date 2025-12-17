@@ -2,67 +2,30 @@
 """
 topology/tie_map.py
 
-统一的“联络开关/分段点”定义出口。
+作用（给小白看的）：
+- 把“mv_oberrhein 默认网络里哪些线路是断点/联络点（section points）”写成一份固定清单
+- 这份清单是 Stage 2 拓扑核验的“证据基线”
+- 后续你要增强网络（新增 tie、改默认开关状态），也在这里改，并且有日志可追溯
 
-对外提供两个接口：
-1) inter_feeder_switch_map: 你原来环境用的结构（按 feeder_id 分组）
-2) TIE_DEFS: 更通用的列表结构（每个 tie 一个 dict）
-
-注意：verify_tie_map.py 目前 import 的是 inter_feeder_switch_map，
-所以这里必须存在这个变量名。
+IMPORTANT:
+- OBERRHEIN_SECTION_POINTS：以 pandapower 默认 net.switch 状态为准（你日志里那 6 条线）
+- inter_feeder_switch_map：保留一个兼容名字，避免你其他脚本 import 报错
 """
 
 from __future__ import annotations
 
-# -----------------------------
-# 1) 你的原始结构：按馈线编号组织
-# -----------------------------
-# 你可以把你现在用的那份字典原样粘过来（我这里给你放一个“占位示例”）
-# !!! 请把下面内容替换成你真实的 inter_feeder_switch_map !!!
-inter_feeder_switch_map = {
-    1: [
-        {"with_feeder": 2, "switch_pair": [106, 107], "line": 66, "bus1": 54, "bus2": 147},
-    ],
-    2: [
-        {"with_feeder": 1, "switch_pair": [106, 107], "line": 66, "bus1": 147, "bus2": 54},
-        {"with_feeder": 3, "switch_pair": [33, 34], "line": 23, "bus1": 195, "bus2": 132},
-        {"with_feeder": 3, "switch_pair": [143, 144], "line": 88, "bus1": 236, "bus2": 223},
-        {"with_feeder": 4, "switch_pair": [47, 48], "line": 31, "bus1": 31, "bus2": 190},
-    ],
-    3: [
-        {"with_feeder": 2, "switch_pair": [33, 34], "line": 23, "bus1": 132, "bus2": 195},
-        {"with_feeder": 2, "switch_pair": [143, 144], "line": 88, "bus1": 223, "bus2": 236},
-        {"with_feeder": 4, "switch_pair": [264, 265], "line": 162, "bus1": 39, "bus2": 80},
-        {"with_feeder": 4, "switch_pair": [310, 311], "line": 188, "bus1": 35, "bus2": 45},
-    ],
-    4: [
-        {"with_feeder": 2, "switch_pair": [47, 48], "line": 31, "bus1": 190, "bus2": 31},
-        {"with_feeder": 3, "switch_pair": [264, 265], "line": 162, "bus1": 80, "bus2": 39},
-        {"with_feeder": 3, "switch_pair": [310, 311], "line": 188, "bus1": 45, "bus2": 35},
-    ],
+# 这 6 条就是你 logs/inspect_section_points_stage2_6.txt 里打印出来的结果
+# 每条 line 上有 2 个开关：一个闭合(True)，一个断开(False)
+OBERRHEIN_SECTION_POINTS = {
+    8:   {"switch_pair": (13, 14),  "bus_pair": (167, 129), "default_closed": (True,  False)},
+    23:  {"switch_pair": (33, 34),  "bus_pair": (195, 132), "default_closed": (True,  False)},
+    31:  {"switch_pair": (47, 48),  "bus_pair": (31,  190), "default_closed": (True,  False)},
+    66:  {"switch_pair": (106, 107),"bus_pair": (54,  147), "default_closed": (True,  False)},
+    88:  {"switch_pair": (143, 144),"bus_pair": (236, 223), "default_closed": (True,  False)},
+    188: {"switch_pair": (310, 311),"bus_pair": (35,   45), "default_closed": (True,  False)},
 }
 
-# -----------------------------
-# 2) 通用结构：每个 tie 一条记录
-# -----------------------------
-# 从 inter_feeder_switch_map 自动汇总，避免重复写两份
-TIE_DEFS = []
-_seen = set()
-for feeder_id, links in inter_feeder_switch_map.items():
-    for link in links:
-        # 用 line_id + switch_pair 做唯一键（避免同一条 tie 在 feeder A、B 各写一遍）
-        key = (int(link["line"]), tuple(sorted(map(int, link["switch_pair"]))))
-        if key in _seen:
-            continue
-        _seen.add(key)
-        TIE_DEFS.append(
-            {
-                "line": int(link["line"]),
-                "switch_pair": list(map(int, link["switch_pair"])),
-                "bus1": int(link.get("bus1")),
-                "bus2": int(link.get("bus2")),
-            }
-        )
-
-# 按 line 排序一下，方便读
-TIE_DEFS = sorted(TIE_DEFS, key=lambda d: d["line"])
+# 兼容旧代码：有些脚本可能还在 from topology.tie_map import inter_feeder_switch_map
+# 这里先给一个空的占位，避免 ImportError。
+# 真正“按4条馈线组织的 inter_feeder_switch_map”建议后面 Stage 3 再从 feeder_map 自动生成。
+inter_feeder_switch_map = {}
