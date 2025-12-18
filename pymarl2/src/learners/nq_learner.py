@@ -3,7 +3,6 @@ from components.episode_buffer import EpisodeBatch
 from modules.mixers.nmix import Mixer
 from modules.mixers.vdn import VDNMixer
 from modules.mixers.qatten import QattenMixer
-from envs.matrix_game import print_matrix_status
 from utils.rl_utils import build_td_lambda_targets, build_q_lambda_targets
 import torch as th
 from torch.optim import RMSprop, Adam
@@ -19,6 +18,8 @@ class NQLearner:
         self.last_target_update_episode = 0
         self.device = th.device('cuda' if args.use_cuda  else 'cpu')
         self.params = list(mac.parameters())
+
+        # ... existing code ...
 
         if args.mixer == "qatten":
             self.mixer = QattenMixer(args)
@@ -139,9 +140,6 @@ class NQLearner:
             self.logger.log_stat("target_mean", (targets * mask).sum().item()/(mask_elems * self.args.n_agents), t_env)
             self.log_stats_t = t_env
             
-            # print estimated matrix
-            if self.args.env == "one_step_matrix_game":
-                print_matrix_status(batch, self.mixer, mac_out)
 
         # return info
         info = {}

@@ -1,60 +1,115 @@
-class MultiAgentEnv(object):
+class MultiAgentEnv:
+    def __init__(self, **kwargs):
+        pass
 
     def step(self, actions):
-        """ Returns reward, terminated, info """
+        """
+        执行动作并返回结果
+        :param actions: List of actions for each agent
+        :return: obs, rewards, dones, infos
+        """
         raise NotImplementedError
 
     def get_obs(self):
-        """ Returns all agent observations in a list """
+        """
+        返回每个智能体的观测
+        :return: List of observations for each agent
+        """
         raise NotImplementedError
 
     def get_obs_agent(self, agent_id):
-        """ Returns observation for agent_id """
+        """
+        返回特定智能体的观测
+        :param agent_id: Agent index
+        :return: Observation for the agent
+        """
         raise NotImplementedError
 
     def get_obs_size(self):
-        """ Returns the shape of the observation """
+        """
+        返回观测空间大小
+        :return: Observation size
+        """
         raise NotImplementedError
 
     def get_state(self):
+        """
+        返回全局状态
+        :return: Global state
+        """
         raise NotImplementedError
 
     def get_state_size(self):
-        """ Returns the shape of the state"""
+        """
+        返回全局状态大小
+        :return: State size
+        """
         raise NotImplementedError
 
     def get_avail_actions(self):
+        """
+        返回每个智能体可用的动作
+        :return: Available actions for each agent
+        """
         raise NotImplementedError
 
     def get_avail_agent_actions(self, agent_id):
-        """ Returns the available actions for agent_id """
+        """
+        返回特定智能体可用的动作
+        :param agent_id: Agent index
+        :return: Available actions for the agent
+        """
         raise NotImplementedError
 
     def get_total_actions(self):
-        """ Returns the total number of actions an agent could ever take """
-        # TODO: This is only suitable for a discrete 1 dimensional action space for each agent
+        """
+        返回动作空间大小
+        :return: Action space size
+        """
         raise NotImplementedError
 
     def reset(self):
-        """ Returns initial observations and states"""
+        """
+        重置环境
+        :return: Initial observations and states
+        """
         raise NotImplementedError
 
     def render(self):
-        raise NotImplementedError
+        """
+        渲染环境（可选）
+        """
+        pass
 
     def close(self):
-        raise NotImplementedError
+        """
+        关闭环境（可选）
+        """
+        pass
 
-    def seed(self):
-        raise NotImplementedError
+    def seed(self, seed):
+        """
+        设置随机种子
+        :param seed: Random seed
+        """
+        pass
 
     def save_replay(self):
-        raise NotImplementedError
+        """
+        保存回放（可选）
+        """
+        pass
 
     def get_env_info(self):
-        env_info = {"state_shape": self.get_state_size(),
-                    "obs_shape": self.get_obs_size(),
-                    "n_actions": self.get_total_actions(),
-                    "n_agents": self.n_agents,
-                    "episode_limit": self.episode_limit}
+        """
+        返回环境信息
+        :return: Environment information dictionary
+        """
+        env_info = {
+            "state_shape": self.get_state_size(),
+            "obs_shape": self.get_obs_size(),
+            "n_actions": self.get_total_actions(),
+            "n_agents": self.n_agents,
+            "episode_limit": self.episode_limit,
+        }
         return env_info

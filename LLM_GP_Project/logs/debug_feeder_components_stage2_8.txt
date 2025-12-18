@@ -1,0 +1,19 @@
+[INFO] components=2, sizes=[109, 70]
+
+=== ROOT BUS -> COMPONENT ===
+ feeder_id  root_bus  component_id
+         1       319             0
+         2       126             0
+         3        58             1
+         4        80             1
+
+=== TIE_SWITCHES cross-component check ===
+ switch_id  line_id  from_bus  to_bus  sw_closed  comp_from  comp_to  cross_component
+        34       23       195     132      False          0        1             True
+        48       31        31     190      False          0        1             True
+       144       88       236     223      False          0        1             True
+        14        8       167     129      False          0        0            False
+       107       66        54     147      False          0        0            False
+       311      188        35      45      False          1        1            False
+
+[OK] saved: logs/debug_components_ties_stage2_8.csv

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 配电网检修调度多智能体强化学习训练脚本
 完整修复版本
@@ -14,8 +15,7 @@ import torch as th
 
 # 添加项目路径
 project_root = os.path.dirname(os.path.abspath(__file__))
-pymarl_src = os.path.join(project_root, 'pymarl2', 'src')
-sys.path.insert(0, pymarl_src)
+sys.path.insert(0, project_root)
 
 def run(_run, _config, _log):
     """主运行函数"""
@@ -98,6 +98,7 @@ def run(_run, _config, _log):
         'train_batch_size': 32,
         'use_replay_buffer': True,
         'replay_buffer_size': 32000,
+        
         
         # 观测参数
         'obs_last_action': True,
@@ -410,7 +411,7 @@ def main():
     """主函数"""
     
     # 加载配置文件
-    config_path = "pymarl2/src/config/default_powergrid.yaml"
+    config_path = "src/config/default_powergrid.yaml"
     
     if not os.path.exists(config_path):
         print(f"配置文件不存在: {config_path}")

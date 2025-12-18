@@ -5,8 +5,8 @@ env: "powergrid"
 
 # 环境参数
 env_args:
-  task_file: "maintenance_plan_20250521_151713.xlsx"
-  load_curve_file: "test_loads_curve.csv"
+  task_file: "src/envs/network/maintenance_plan_20251218_212005.xlsx"
+  load_curve_file: "src/envs/network/test_loads_curve.csv"
   episode_limit: 91
   obs_last_action: true
   obs_agent_id: true

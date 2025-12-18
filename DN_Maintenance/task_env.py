@@ -83,7 +83,7 @@ def read_tasks_from_excel(file_path):
         duration = int(row['持续时间(小时)'])
         priority = int(row['优先级'])           # 优先级：1低，2中，3高
         
-        # 元件类型自动判别（假设名称开头如“bus123”）
+        # 元件类型自动判别（假设名称开头如"bus123"）
         if element_name.startswith('bus'):
             element_type = 'bus'
             element_id = int(element_name[4:])
@@ -186,7 +186,7 @@ def build_region_assets(net, feeders_bus_sets):
     return region_assets
 
 
-class GridMaintenanceEnv(object):
+class GridMaintenanceEnv(MultiAgentEnv):
         
 
     def __init__(self, net, initial_tasks, forecast_loads, horizon_days=7, window_size=3):
@@ -215,7 +215,7 @@ class GridMaintenanceEnv(object):
         feeders_bus_sets = [set(feeder1), set(feeder2), set(feeder3), set(feeder4)]
 
         self.region_assets = build_region_assets(net, feeders_bus_sets)
-        self.agent_num =4# 明确智能体数量
+        self.agent_num = 4  # 明确智能体数量
         self.agents = list(range(self.agent_num))
         self.tasks_all = [dict(t) for t in initial_tasks]
         self.forecast_loads = forecast_loads
@@ -249,7 +249,7 @@ class GridMaintenanceEnv(object):
                 task['region_id'] = -1  # 标记为跨区，后续专门处理
 
         self.episode_limit = 24 * self.horizon  # 多少步结束
-
+        self.n_agents = self.agent_num
         self.reset()
 
 
@@ -374,23 +374,35 @@ class GridMaintenanceEnv(object):
         return np.array(feat, dtype=np.float32)
 
 
+    def get_obs_size(self):
+        """返回观测空间大小"""
+        return self.window_size * 3
 
 
-#------------------------获得被动作的开关------------------------
+    def get_state_size(self):
+        """返回状态空间大小"""
+        return 4  # 优先级分布(3) + 电压风险(1)
+
+
+    def get_total_actions(self):
+        """返回动作空间大小"""
+        return self.time_slots  # 91
+
+
+    #------------------------获得被动作的开关------------------------
     def get_occupied_switches(self):
         """获得当前所有已被闭合的联络开关（如[(106,107), ...]）"""
         occupied = set()
         for task in self.tasks:
             if task['status'] == 'assigned':
                 transfer_idx = task.get('transfer_idx', 0)
-                # 哪些开关被已分配任务“闭合”
+                # 哪些开关被已分配任务"闭合"
                 ops = task['transfer_options'][transfer_idx]['switch_ops']
                 for op in ops:
                     if op['closed']:
                         occupied.add(op['switch_id'])
         return occupied   
     
-
 
 
     def get_avail_agent_actions(self, agent_id):
@@ -450,15 +462,18 @@ class GridMaintenanceEnv(object):
         return avail_list
     
 
-    def get_total_actions(self):
-        return self.time_slots  # 91
+    def get_avail_actions(self):
+        """
+        返回所有智能体的可用动作
+        """
+        return [self.get_avail_agent_actions(i) for i in range(self.agent_num)]
 
 
     def get_env_info(self):
         return {
-            "state_shape": self.get_state().shape[0],
-            "obs_shape": self.get_obs_agent(0).shape[0],
-            "n_actions": 4,
+            "state_shape": self.get_state_size(),
+            "obs_shape": self.get_obs_size(),
+            "n_actions": self.get_total_actions(),
             "n_agents": self.agent_num,
             "episode_limit": self.episode_limit
         }

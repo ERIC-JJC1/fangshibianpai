@@ -1,0 +1,27 @@
+[INFO] components=2, sizes=[109, 70]
+
+=== ROOT BUS -> COMPONENT ===
+ feeder_id  root_bus  component_id
+         1       319             0
+         2       126             0
+         3        58             1
+         4        80             1
+
+=== FEEDER BUS SETS SUMMARY ===
+feeder 1: n_bus=65, sample=[0, 1, 2, 3, 4, 5, 6, 7, 8, 54, 85, 129, 131, 133, 140, 144, 153, 155, 157, 159]
+feeder 2: n_bus=44, sample=[29, 30, 31, 33, 40, 72, 74, 75, 101, 103, 104, 106, 108, 109, 110, 111, 116, 126, 136, 138]
+feeder 3: n_bus=34, sample=[35, 37, 38, 39, 41, 43, 58, 71, 73, 77, 78, 81, 83, 86, 94, 95, 98, 100, 102, 107]
+feeder 4: n_bus=36, sample=[32, 34, 36, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 55, 56, 57, 64, 65, 76]
+
+=== TIE_SWITCHES cross-feeder check ===
+ switch_id  line_id  from_bus  to_bus  bus_feeder_from  bus_feeder_to  cross_feeder  declared_home  declared_target  sw_closed_now
+        14        8       167     129                1              1         False              1                2          False
+        34       23       195     132                2              3          True              2                3          False
+        48       31        31     190                2              4          True              2                4          False
+       107       66        54     147                1              2          True              1                2          False
+       144       88       236     223                2              3          True              2                3          False
+       311      188        35      45                3              4          True              3                4          False
+[OK] saved: /home/wzseu/JJC_project/fangshibianpai/LLM_GP_Project/logs/debug_tie_switch_cross_feeder_stage2_8.csv
+[OK] saved: /home/wzseu/JJC_project/fangshibianpai/LLM_GP_Project/logs/feeder_bus_sets_stage2_8.json
+[OK] saved: /home/wzseu/JJC_project/fangshibianpai/LLM_GP_Project/logs/feeder_by_bus_stage2_8.csv
+[OK] saved: /home/wzseu/JJC_project/fangshibianpai/LLM_GP_Project/logs/feeder_bus_sets_stage2_8.py_snippet.txt

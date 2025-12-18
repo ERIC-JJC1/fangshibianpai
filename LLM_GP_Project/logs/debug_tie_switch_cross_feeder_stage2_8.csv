@@ -1,0 +1,7 @@
+switch_id,line_id,from_bus,to_bus,bus_feeder_from,bus_feeder_to,cross_feeder,declared_home,declared_target,sw_closed_now
+14,8,167,129,1,1,False,1,2,False
+34,23,195,132,2,3,True,2,3,False
+48,31,31,190,2,4,True,2,4,False
+107,66,54,147,1,2,True,1,2,False
+144,88,236,223,2,3,True,2,3,False
+311,188,35,45,3,4,True,3,4,False

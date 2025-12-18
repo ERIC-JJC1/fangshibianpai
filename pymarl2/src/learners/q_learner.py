@@ -3,10 +3,10 @@ from components.episode_buffer import EpisodeBatch
 from modules.mixers.vdn import VDNMixer
 from modules.mixers.qmix import QMixer
 from utils.rl_utils import build_td_lambda_targets
-from envs.matrix_game import print_matrix_status
 import torch as th
 from torch.optim import RMSprop, Adam
 import numpy as np
+
 
 class QLearner:
     def __init__(self, mac, scheme, logger, args):
@@ -124,9 +124,6 @@ class QLearner:
             self.logger.log_stat("target_mean", (targets * mask).sum().item()/(mask_elems * self.args.n_agents), t_env)
             self.log_stats_t = t_env
             
-            # print estimated matrix
-            if self.args.env == "one_step_matrix_game":
-                print_matrix_status(batch, self.mixer, mac_out)
 
     def _update_targets(self):
         self.target_mac.load_state(self.mac)

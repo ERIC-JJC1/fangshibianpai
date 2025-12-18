@@ -1,0 +1,54 @@
+# 配电网检修调度环境配置
+env: powergrid
+
+env_args:
+  task_file: "src/envs/network/maintenance_plan_20251218_212005.xlsx"
+  load_curve_file: "src/envs/network/test_loads_curve.csv"
+  episode_limit: 91
+  reward_completion: 100.0
+  reward_delay: -50.0
+  reward_infeasible: -1000.0
+  reward_stability: 10.0
+  reward_load_shed: -500.0
+
+# 使用QMIX算法
+learner: "q_learner"
+mixer: "qmix"
+mixing_embed_dim: 32
+hypernet_layers: 2
+hypernet_embed: 64
+
+# 智能体配置
+mac: "basic_mac"
+agent: "rnn"
+agent_output_type: "q"
+rnn_hidden_dim: 64
+
+# 训练参数
+t_max: 2000000
+buffer_size: 32000
+batch_size: 32
+optimizer: "adam"
+lr: 0.0005
+critic_lr: 0.0005
+
+# 探索参数
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 50000
+
+target_update_interval: 200
+
+# RL参数
+gamma: 0.99
+td_lambda: 0.8
+
+# 评估和日志
+test_nepisode: 32
+test_interval: 10000
+log_interval: 2000
+runner_log_interval: 2000
+learner_log_interval: 2000
+
+# 硬件配置
+use_cuda: false
